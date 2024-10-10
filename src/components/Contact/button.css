@@ -1,0 +1,40 @@
+
+  .btn-grad {
+    background-image: linear-gradient(to right, #83a4d4 0%, #b6fbff  51%, #83a4d4  100%);
+    margin: 10px;
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: rgb(0, 98, 101);            
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: none;
+  }
+  .btn-grad:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+  }
+  .chat {
+    background-image: linear-gradient(to right, #83a4d4 0%, #b6fbff 51%, #83a4d4 100%);
+    color: rgb(0, 98, 101);
+    box-shadow: 0 0 20px #eee;
+    border-radius: 20px;
+    position: relative;
+  }
+  .chat::after {
+    content: '';
+    position: absolute;
+    left: -10px;
+    bottom: 20px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #b6fbff;
+  }

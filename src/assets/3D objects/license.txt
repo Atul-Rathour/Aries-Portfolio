@@ -1,0 +1,11 @@
+Model Information:
+* title:	Future architectural
+* source:	https://sketchfab.com/3d-models/future-architectural-53dcd96bfb2d47be98582af1a491c02e
+* author:	auts111 (https://sketchfab.com/auts111)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Future architectural" (https://sketchfab.com/3d-models/future-architectural-53dcd96bfb2d47be98582af1a491c02e) by auts111 (https://sketchfab.com/auts111) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -1,0 +1,33 @@
+@keyframes left-bottom {
+    from{
+        left: 0%
+    }
+    to{
+        left: 100%;
+    }
+}
+
+.ani-left{
+    animation: left-bottom 2s linear infinite alternate ;
+}
+@keyframes top-bottom {
+    from{
+        right: 0%
+    }
+    to{
+        right: 100%;
+    }
+}
+
+.ani-top-1{
+    animation: top-bottom 0.8s linear infinite alternate ;
+    
+}
+
+.ani-top-2{
+    animation: top-bottom 0.8s linear 0.5s infinite alternate ;
+}
+
+.ani-top-3{
+    animation: top-bottom 0.8s linear 0.65s infinite alternate ;
+}

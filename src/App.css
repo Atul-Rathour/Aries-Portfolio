@@ -1,0 +1,29 @@
+@font-face {
+  font-family: 'tech';
+  src: url('./assets/04ff47e1ca568747-s.p.woff2');
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  font-family: 'tech';
+  cursor: none;
+  /* overflow-x: hidden; */
+}
+
+.App{
+  /* overflow: hidden; */
+  /* overflow-x: hidden; */
+}
+
+a{
+  cursor: none;
+}
+
+.background{
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: -1;
+
+}
