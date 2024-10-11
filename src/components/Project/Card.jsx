@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import MainLoader from "../MainLoader";
 
 const Card = ({ imgSrc,videoSrc, headline, techs }) => {
+
+  const [isLoading, setisLoading] = useState(true)
   return (
    
 
@@ -15,8 +18,15 @@ const Card = ({ imgSrc,videoSrc, headline, techs }) => {
           alt=""
           class="absolute top-0 left-0 w-full h-full object-cover object-top"
         /> */}
+        {isLoading && 
+          <MainLoader/>
+        }
 
-          <video src={videoSrc} className="absolute top-0 left-0 w-full h-full object-cover" autoPlay loop muted/>
+          <video src={videoSrc} 
+            onLoadedData={() => {
+              setisLoading(false)
+            }}
+          className="absolute top-0 left-0 w-full h-full object-cover" autoPlay loop muted/>
 
       </div>
       <div class="relative p-4 py-3 lg:p-6 text-black backdrop-blur">
