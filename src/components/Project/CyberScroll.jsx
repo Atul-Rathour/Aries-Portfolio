@@ -69,7 +69,7 @@ const CyberScroll = ({ scrollRef }) => {
     <section ref={containerRef} className="h-[260rem] relative">
       <div className="sticky top-0 left-0 w-full h-screen flex items-center justify-center">
         {imagesLoaded ? (
-          <canvas 
+          <canvas  
             ref={canvasRef} 
             className="w-full h-full object-contain"
           />
