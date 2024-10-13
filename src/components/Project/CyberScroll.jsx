@@ -11,29 +11,52 @@ const createImage = (src) => {
   });
 };
 
+// const handleDrawCanvas = (img, ctx) => {
+//   const canvas = ctx.canvas;
+//   const canvasAspect = canvas.width / canvas.height;
+//   const imgAspect = img.width / img.height;
+//   let drawWidth, drawHeight, x, y;
+
+//   if (canvasAspect > imgAspect) {
+//     // Canvas is wider than the image
+//     drawHeight = canvas.height;
+//     drawWidth = img.width * (drawHeight / img.height);
+//     x = (canvas.width - drawWidth) / 2;
+//     y = 0;
+//   } else {
+//     // Canvas is taller than the image
+//     drawWidth = canvas.width;
+//     drawHeight = img.height * (drawWidth / img.width);
+//     x = 0;
+//     y = (canvas.height - drawHeight) / 2;
+//   }
+
+//   ctx.clearRect(0, 0, canvas.width, canvas.height);
+//   ctx.drawImage(img, x, y, drawWidth, drawHeight);
+// };
+
+
 const handleDrawCanvas = (img, ctx) => {
   const canvas = ctx.canvas;
-  const canvasAspect = canvas.width / canvas.height;
-  const imgAspect = img.width / img.height;
-  let drawWidth, drawHeight, x, y;
-
-  if (canvasAspect > imgAspect) {
-    // Canvas is wider than the image
-    drawHeight = canvas.height;
-    drawWidth = img.width * (drawHeight / img.height);
-    x = (canvas.width - drawWidth) / 2;
-    y = 0;
-  } else {
-    // Canvas is taller than the image
-    drawWidth = canvas.width;
-    drawHeight = img.height * (drawWidth / img.width);
-    x = 0;
-    y = (canvas.height - drawHeight) / 2;
-  }
-
+  const widthRatio = canvas.width / img.width;
+  const heightRatio = canvas.height / img.height;
+  const ratio = Math.max(widthRatio, heightRatio);
+  const centerX = (canvas.width - img.width * ratio) / 2;
+  const centerY = (canvas.height - img.height * ratio) / 2;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(img, x, y, drawWidth, drawHeight);
+  ctx.drawImage(
+    img,
+    0,
+    0,
+    img.width,
+    img.height,
+    centerX,
+    centerY,
+    img.width * ratio,
+    img.height * ratio
+  );
 };
+
 
 const CyberScroll = ({ scrollRef }) => {
   const containerRef = useRef(null);
