@@ -1,33 +1,31 @@
 import React, { useState } from "react";
 import MainLoader from "../MainLoader";
 
-const Card = ({ imgSrc,videoSrc, headline, techs }) => {
-
-  const [isLoading, setisLoading] = useState(true)
+const Card = ({ imgSrc, videoSrc, headline, techs }) => {
+  const [isLoading, setisLoading] = useState(true);
   return (
-   
-
     <div class="relative mr-20 w-full xl:w-[35%] bg-white/[0.3] z-10 overflow-hidden">
-      <a
-        href="#"
-        class="absolute top-0 left-0 w-full h-full z-10"
-      ></a>
+      <a href="#" class="absolute top-0 left-0 w-full h-full z-10"></a>
       <div class="relative w-full h-auto aspect-[16/9] border">
         {/* <img
           src={imgSrc}
           alt=""
           class="absolute top-0 left-0 w-full h-full object-cover object-top"
         /> */}
-        {isLoading && 
-          <MainLoader/>
-        }
+        <div
+        className="absolute h-full w-full flex justify-center items-center"
+        >{isLoading && <MainLoader />}</div>
 
-          <video src={videoSrc} 
-            onLoadedData={() => {
-              setisLoading(false)
-            }}
-          className="absolute top-0 left-0 w-full h-full object-cover" autoPlay loop muted/>
-
+        <video
+          src={videoSrc}
+          onLoadedData={() => {
+            setisLoading(true);
+          }}
+          className="absolute top-0 left-0 w-full h-full object-cover"
+          autoPlay
+          loop
+          muted
+        />
       </div>
       <div class="relative p-4 py-3 lg:p-6 text-black backdrop-blur">
         <div class="absolute left-0 bottom-0 w-8 h-8 border-l border-b border-[#66C2C5]"></div>
@@ -37,7 +35,10 @@ const Card = ({ imgSrc,videoSrc, headline, techs }) => {
             <div class="uppercase font-bold text-[.9rem]">{headline}</div>
             <div class="mt-2">
               {techs.map((tech, i) => (
-                <div key={i} class="inline-block mb-2 lg:mb-0 mr-2 mt-[0.7rem] px-2 py-1 border border-[#66C2C5] uppercase font-semibold text-[.7rem] lg:text-[.8rem]">
+                <div
+                  key={i}
+                  class="inline-block mb-2 lg:mb-0 mr-2 mt-[0.7rem] px-2 py-1 border border-[#66C2C5] uppercase font-semibold text-[.7rem] lg:text-[.8rem]"
+                >
                   {tech}
                   {/* console.log(tech) */}
                 </div>

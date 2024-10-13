@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState, useEffect } from "react";
 import { useScrollImageSequenceFramerCanvas } from "../hooks";
 import Projects from "./Projects";
+import Loader from "./Loader";
 
 const createImage = (src) => {
   return new Promise((resolve, reject) => {
@@ -68,13 +69,13 @@ const CyberScroll = ({ scrollRef }) => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
-          <p>loading...</p>
+        <Loader/>
       </div>
     );
   }
 
   return (
-    <section ref={containerRef} className="h-[260rem]">
+    <section ref={containerRef} className="h-[330rem]">
       <div className="sticky top-0">
         <canvas ref={canvasRef} className="absolute inset-0 block" />
       </div>

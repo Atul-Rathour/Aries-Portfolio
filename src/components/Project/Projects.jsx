@@ -71,7 +71,7 @@ const Projects = () => {
       </div>
       {projects.map((project, i) => (
         <div
-          className={`flex relative w-[100%] ${
+          className={`flex relative w-[100%] mt-[5rem] mb-[5rem] ${
             i % 2 == 0 ? "" : "justify-end"
           } `}
         >
