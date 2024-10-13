@@ -72,7 +72,7 @@ const Content = () => {
           <div className="absolute lg:left-[65%] top-[70%] w-[600px] mobile:left-[3%] mobile:w-[400px] h-auto z-[-1] ">
             <div className="test3 relative p-5 lg:p-6 xl:p-6 2xl:p-8 3xl:p-9">
               <div
-                className="absolute top-[50%] left-[50%] h-full bg-[#212320]/[0.6] backdrop-blur-sm mobile:h-[60vh]  "
+                className="absolute top-[47%] left-[50%] h-full bg-[#212320]/[0.6] backdrop-blur-sm mobile:h-[60vh]  "
                 style={{ transform: "translate(-50%, -50%)", width: "100%" }}
               ></div>
               <div
@@ -87,7 +87,7 @@ const Content = () => {
                 {isLoading && <MainLoader/>}
                 <video src={content.vid}
                 onLoadedData={() => {setisLoading(false)}}
-                autoPlay loop muted className="h-[100%] w-[100%] object-cover" />
+                autoPlay loop muted className=" absolute top-[-3%] h-[100%] w-[100%] object-cover" />
               </div>
             </div>
           </div>
