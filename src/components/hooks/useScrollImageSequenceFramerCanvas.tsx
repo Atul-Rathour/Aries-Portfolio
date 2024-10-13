@@ -14,8 +14,8 @@ export interface UseScrollImageSequenceFramerCanvasProps {
 }
 
 const useScrollImageSequenceFramerCanvas = ({
-  onDraw, // how the canvas will be drawn
-  keyframes, // the array of images
+  onDraw,
+  keyframes,
   scrollOptions,
   springConfig = {
     damping: 50,
@@ -30,40 +30,56 @@ const useScrollImageSequenceFramerCanvas = ({
   const progress = useSpring(scrollYProgress, springConfig);
 
   const resizeCanvas = useCallback(() => {
-    const canvas = canvasRef.current!;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const canvas = canvasRef.current;
+    if (canvas) {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
   }, []);
 
   const renderImage = useCallback(
     (progress: number) => {
-      const constraint = (n: number, min = 0, max = keyframes.length - 1) =>
-        Math.min(Math.max(n, min), max);
-      onDraw(
-        keyframes[constraint(Math.round(keyframes.length * progress))],
-        canvasRef.current!.getContext('2d')!,
-      );
+      const canvas = canvasRef.current;
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          const constraint = (n: number, min = 0, max = keyframes.length - 1) =>
+            Math.min(Math.max(n, min), max);
+          onDraw(
+            keyframes[constraint(Math.round(keyframes.length * progress))],
+            ctx,
+          );
+        }
+      }
     },
-    [keyframes],
+    [keyframes, onDraw],
   );
 
   useEffect(() => {
-    resizeCanvas();
-    const resizeCanvasAndRerender = () => {
+    const handleResize = () => {
       resizeCanvas();
       renderImage(progress.get());
     };
-    window.addEventListener('resize', resizeCanvasAndRerender);
+
+    handleResize(); // Initial resize and render
+    window.addEventListener('resize', handleResize);
+
     return () => {
-      window.removeEventListener('resize', resizeCanvasAndRerender);
+      window.removeEventListener('resize', handleResize);
     };
   }, [progress, renderImage, resizeCanvas]);
 
   useEffect(() => {
-    keyframes[0].onload = () => {
-      onDraw(keyframes[0], canvasRef.current!.getContext('2d')!);
-    };
-  }, [keyframes]);
+    if (keyframes.length > 0) {
+      const canvas = canvasRef.current;
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          onDraw(keyframes[0], ctx);
+        }
+      }
+    }
+  }, [keyframes, onDraw]);
 
   useMotionValueEvent(progress, 'change', renderImage);
 

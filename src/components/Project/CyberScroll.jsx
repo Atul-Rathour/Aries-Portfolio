@@ -1,12 +1,14 @@
-import { useMemo, useRef, useEffect } from "react";
+import React, { useMemo, useRef, useState, useEffect } from "react";
 import { useScrollImageSequenceFramerCanvas } from "../hooks";
-
 import Projects from "./Projects";
-// #1
+
 const createImage = (src) => {
-  const img = document.createElement("img");
-  img.src = src;
-  return img;
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
 };
 
 const handleDrawCanvas = (img, ctx) => {
@@ -31,14 +33,27 @@ const handleDrawCanvas = (img, ctx) => {
 };
 
 const CyberScroll = ({ scrollRef }) => {
-  // this method is making images array that will render in the canvas and calling the #1 function
-  const keyframes = useMemo(
-    () =>
-      [...new Array(300)].map((_, i) =>
-        createImage(`./images/male${(i + 1).toString().padStart(4, "0")}.webp`)
-      ),
-    []
-  );
+  const [isLoading, setIsLoading] = useState(true);
+  const [keyframes, setKeyframes] = useState([]);
+
+  useEffect(() => {
+    const loadImages = async () => {
+      try {
+        const loadedImages = await Promise.all(
+          [...new Array(300)].map((_, i) =>
+            createImage(`./images/male${(i + 1).toString().padStart(4, "0")}.webp`)
+          )
+        );
+        setKeyframes(loadedImages);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Failed to load images:", error);
+        setIsLoading(false);
+      }
+    };
+
+    loadImages();
+  }, []);
 
   const containerRef = useRef(null);
   const [progress, canvasRef] = useScrollImageSequenceFramerCanvas({
@@ -50,12 +65,20 @@ const CyberScroll = ({ scrollRef }) => {
     },
   });
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
+
   return (
-    <section ref={containerRef} className="h-[260rem]  ">
+    <section ref={containerRef} className="h-[260rem]">
       <div className="sticky top-0">
         <canvas ref={canvasRef} className="absolute inset-0 block" />
       </div>
-        <Projects/>
+      <Projects />
     </section>
   );
 };
