@@ -75,7 +75,7 @@ const About = () => {
   return (
     <section ref={containerRef} className="relative w-full">
       <div className="sticky top-0 w-full h-screen overflow-hidden">
-        <canvas ref={canvasRef} className="w-full scale-[0.75] mobile:scale-[1] h-full object-contain" />
+        <canvas ref={canvasRef} className="w-full lg:scale-[0.75] mobile:scale-[1] h-full object-contain" />
       </div>
 
       <div className="absolute top-0 left-0 w-full h-screen flex flex-col items-center justify-center">

@@ -77,7 +77,7 @@ const CyberScroll = ({ scrollRef }) => {
   return (
     <section ref={containerRef} className="h-[330rem]">
       <div className="sticky top-0">
-        <canvas ref={canvasRef} className="absolute inset-0 block" />
+        <canvas ref={canvasRef} className="absolute  inset-0 block" />
       </div>
       <Projects />
     </section>
