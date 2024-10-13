@@ -87,17 +87,6 @@ const About = () => {
       </div>
     </section>
 
-    // <section ref={containerRef} className="h-[400rem] w-[98vw] ">
-    //   <div className="sticky top-0 ">
-    //     <canvas ref={canvasRef} className="absolute inset-0 block scale-[0.75] mobile:scale-[0.5] lg:scale-[0.75] " />
-    //   </div>
-
-    //   <div className="flex flex-col items-center justify-center h-[40rem] mobile:translate-y-[5rem]  ">
-    //     <Heading words={words} />
-    //   </div>
-
-    //   <Content/>
-    // </section>
   );
 };
 

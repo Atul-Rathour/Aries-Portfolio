@@ -18,7 +18,9 @@ const App = () => {
       <>
         <img src={BG} alt="Background" className="background fixed" />
         <Navbar />
-        <ArrowPointer />
+        <div className="cursor" >
+          <ArrowPointer />
+        </div>
         <Router>
           <Routes>
             <Route path="/" element={<Home />} />

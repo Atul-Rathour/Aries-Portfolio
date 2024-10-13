@@ -125,7 +125,7 @@ const Contact = () => {
         </div>
       </div>
 
-      <motion.div
+      {/* <motion.div
         variants={slideIn("right", "tween", 0.2, 1)}
         className="xl:flex-1 xl:h-auto relative md:h-[550px] h-[350px] translate-y-[6rem] "
       >
@@ -134,7 +134,7 @@ const Contact = () => {
         <p className="text-xs mt-2">I will reach you soon!</p>
       </div>
         <Phoenix />
-      </motion.div>
+      </motion.div> */}
     </div>
   );
 };
