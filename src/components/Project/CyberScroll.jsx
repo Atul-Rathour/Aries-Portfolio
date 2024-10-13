@@ -1,10 +1,6 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useMemo, useRef, useState, useEffect } from "react";
 import { useScrollImageSequenceFramerCanvas } from "../hooks";
 import Projects from "./Projects";
-
-const TOTAL_IMAGES = 300;
-const INITIAL_LOAD_COUNT = 20; // Number of images to load initially
-const BATCH_SIZE = 10; // Number of images to load in each subsequent batch
 
 const createImage = (src) => {
   return new Promise((resolve, reject) => {
@@ -39,46 +35,35 @@ const handleDrawCanvas = (img, ctx) => {
 };
 
 const CyberScroll = ({ scrollRef }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [keyframes, setKeyframes] = useState([]);
   const [loadingProgress, setLoadingProgress] = useState(0);
-  const [isInitialLoadComplete, setIsInitialLoadComplete] = useState(false);
-  const containerRef = useRef(null);
-
-  const loadImageBatch = async (start, end) => {
-    const newImages = [];
-    for (let i = start; i <= end; i++) {
-      if (i > TOTAL_IMAGES) break;
-      try {
-        const img = await createImage(`./images/male${i.toString().padStart(4, "0")}.webp`);
-        newImages.push(img);
-      } catch (error) {
-        console.error(`Failed to load image ${i}:`, error);
-      }
-    }
-    return newImages;
-  };
 
   useEffect(() => {
     const loadImages = async () => {
-      // Load initial batch
-      const initialImages = await loadImageBatch(1, INITIAL_LOAD_COUNT);
-      setKeyframes(initialImages);
-      setIsInitialLoadComplete(true);
-      setLoadingProgress((INITIAL_LOAD_COUNT / TOTAL_IMAGES) * 100);
+      const totalImages = 300;
+      const loadedImages = [];
+      let loadedCount = 0;
 
-      // Load remaining images in batches
-      let currentIndex = INITIAL_LOAD_COUNT + 1;
-      while (currentIndex <= TOTAL_IMAGES) {
-        const newImages = await loadImageBatch(currentIndex, currentIndex + BATCH_SIZE - 1);
-        setKeyframes(prev => [...prev, ...newImages]);
-        currentIndex += BATCH_SIZE;
-        setLoadingProgress((Math.min(currentIndex, TOTAL_IMAGES) / TOTAL_IMAGES) * 100);
+      for (let i = 1; i <= totalImages; i++) {
+        try {
+          const img = await createImage(`./images/male${i.toString().padStart(4, "0")}.webp`);
+          loadedImages.push(img);
+          loadedCount++;
+          setLoadingProgress((loadedCount / totalImages) * 100);
+        } catch (error) {
+          console.error(`Failed to load image ${i}:`, error);
+        }
       }
+
+      setKeyframes(loadedImages);
+      setIsLoading(false);
     };
 
     loadImages();
   }, []);
 
+  const containerRef = useRef(null);
   const [progress, canvasRef] = useScrollImageSequenceFramerCanvas({
     onDraw: handleDrawCanvas,
     keyframes: keyframes,
@@ -88,7 +73,7 @@ const CyberScroll = ({ scrollRef }) => {
     },
   });
 
-  if (!isInitialLoadComplete) {
+  if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <div className="w-64 h-4 bg-gray-200 rounded-full mb-4">
@@ -97,21 +82,16 @@ const CyberScroll = ({ scrollRef }) => {
             style={{ width: `${loadingProgress}%` }}
           ></div>
         </div>
-        <p>Loading initial content: {Math.round(loadingProgress)}%</p>
+        <p>Loading: {Math.round(loadingProgress)}%</p>
       </div>
     );
   }
 
   return (
-    <section ref={containerRef} className="h-[260rem] relative">
+    <section ref={containerRef} className="h-[260rem]">
       <div className="sticky top-0">
         <canvas ref={canvasRef} className="absolute inset-0 block" />
       </div>
-      {loadingProgress < 100 && (
-        <div className="absolute top-4 right-4 bg-white p-2 rounded shadow">
-          Loading: {Math.round(loadingProgress)}%
-        </div>
-      )}
       <Projects />
     </section>
   );
