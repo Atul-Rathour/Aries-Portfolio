@@ -40,15 +40,15 @@ const useScrollImageSequenceFramerCanvas = ({
   const renderImage = useCallback(
     (progress: number) => {
       const canvas = canvasRef.current;
-      if (canvas && keyframes.length > 0) {
+      if (canvas) {
         const ctx = canvas.getContext('2d');
         if (ctx) {
           const constraint = (n: number, min = 0, max = keyframes.length - 1) =>
             Math.min(Math.max(n, min), max);
-          const img = keyframes[constraint(Math.round(keyframes.length * progress))];
-          if (img && img.complete && img.naturalHeight !== 0) {
-            onDraw(img, ctx);
-          }
+          onDraw(
+            keyframes[constraint(Math.round(keyframes.length * progress))],
+            ctx,
+          );
         }
       }
     },
@@ -75,10 +75,7 @@ const useScrollImageSequenceFramerCanvas = ({
       if (canvas) {
         const ctx = canvas.getContext('2d');
         if (ctx) {
-          const img = keyframes[0];
-          if (img && img.complete && img.naturalHeight !== 0) {
-            onDraw(img, ctx);
-          }
+          onDraw(keyframes[0], ctx);
         }
       }
     }
