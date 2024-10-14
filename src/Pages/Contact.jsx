@@ -125,16 +125,16 @@ const Contact = () => {
         </div>
       </div>
 
-      {/* <motion.div
+      <motion.div
         variants={slideIn("right", "tween", 0.2, 1)}
         className="xl:flex-1 xl:h-auto relative md:h-[550px] h-[350px] translate-y-[6rem] "
       >
-       <div className="absolute rounded-lg right-10 top-20 chat pt-5 pb-5 ps-4 pe-4 max-w-[200px]">
+       {/* <div className="absolute rounded-lg right-10 top-20 chat pt-5 pb-5 ps-4 pe-4 max-w-[200px]">
         <p className="text-sm font-semibold">Hey We got you!</p>
         <p className="text-xs mt-2">I will reach you soon!</p>
-      </div>
+      </div> */}
         <Phoenix />
-      </motion.div> */}
+      </motion.div>
     </div>
   );
 };
