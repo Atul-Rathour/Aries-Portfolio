@@ -127,7 +127,7 @@ const Contact = () => {
 
       <motion.div
         variants={slideIn("right", "tween", 0.2, 1)}
-        className="xl:flex-1 xl:h-auto relative md:h-[550px] h-[350px] translate-y-[6rem] "
+        className="xl:flex-1 xl:h-auto relative md:h-[550px] mobile:h-[600px] h-[350px] translate-y-[6rem] "
       >
        {/* <div className="absolute rounded-lg right-10 top-20 chat pt-5 pb-5 ps-4 pe-4 max-w-[200px]">
         <p className="text-sm font-semibold">Hey We got you!</p>
