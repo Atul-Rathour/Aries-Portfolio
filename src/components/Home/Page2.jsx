@@ -170,7 +170,7 @@ const Page2 = () => {
                 <div className="absolute -bottom-[0.6rem] left-0 right-0 w-[2px] h-[0.6rem] mx-auto bg-[#66C2C5] z-10"></div>
                 <div className="absolute top-0 bottom-0 -left-[0.6rem] w-[0.6rem] h-[2px] m-auto bg-[#66C2C5] z-10"></div>
                 <div>
-                  <p className="p1 text-[3.5rem]">56</p>
+                  <p className="p1 text-[3.5rem]">12</p>
                 </div>
               </div>
               <div className="flex-grow">
