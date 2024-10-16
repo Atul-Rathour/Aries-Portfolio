@@ -39,14 +39,15 @@ const VideoPlayer = ({ onVideoEnd }) => {
 
   return (
     <div className="video-container absolute w-[100vw] h-[100vh] z-[100]">
+      <div ref={coverRef} className="w-[100vw] h-[100vh] absolute z-[2] bg-[#fff] " >
+        Waiting
+      </div>
       <video ref={videoRef} autoPlay muted className="w-[100%] h-[100%] object-cover " >
         <source src={Vid} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
-      <div ref={coverRef} className="w-[100vw] h-[100vh] absolute z-[2] bg-[#fff] " >
-        Waiting
-      </div>
+      
     </div>
   );
 };
