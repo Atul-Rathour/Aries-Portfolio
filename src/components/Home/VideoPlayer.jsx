@@ -18,13 +18,13 @@ const VideoPlayer = ({ onVideoEnd }) => {
       setIsLoaded(true); // the video has loaded
     }
 
-    videoElement.addEventListener('canPlayThrough', handleCanPlayThrough); // checking canPlayThrough event fires when the browser estimate that the video can play with any lag
+    videoElement.addEventListener('canplaythrough', handleCanPlayThrough); // checking canPlayThrough event fires when the browser estimate that the video can play with any lag
     videoElement.addEventListener("ended", handleVideoEnd);
 
     videoElement.load()
 
     return () => {
-      videoElement.removeEventListener('canPlayThrough', handleCanPlayThrough); // removing the event listener when the component is unmounted
+      videoElement.removeEventListener('canplaythrough', handleCanPlayThrough); // removing the event listener when the component is unmounted
       videoElement.removeEventListener("ended", handleVideoEnd);
     };
   }, [onVideoEnd]);
@@ -40,9 +40,9 @@ const VideoPlayer = ({ onVideoEnd }) => {
   return (
     <div className="video-container absolute w-[100vw] h-[100vh] z-[100]">
       <div ref={coverRef} className="w-[100vw] h-[100vh] absolute z-[2] bg-[#fff] " >
-        Waiting
+        Loading...
       </div>
-      <video ref={videoRef} autoPlay muted className="w-[100%] h-[100%] object-cover " >
+      <video ref={videoRef}  muted playsInline className="w-[100%] h-[100%] object-cover " >
         <source src={Vid} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
