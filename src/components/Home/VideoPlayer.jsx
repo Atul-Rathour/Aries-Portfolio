@@ -1,6 +1,7 @@
 // VideoPlayer.js
 import React, { useState, useEffect, useRef } from "react";
 import Vid from '../../assets/video/Intro.mp4'
+import { IntroPage } from "./IntroPage";
 
 const VideoPlayer = ({ onVideoEnd }) => {
   const videoRef = useRef(null);
@@ -15,7 +16,7 @@ const VideoPlayer = ({ onVideoEnd }) => {
     };
 
     const handleCanPlayThrough = () => {
-      setIsLoaded(true); // the video has loaded
+      setIsLoaded(false); // the video has loaded
     }
 
     videoElement.addEventListener('canplaythrough', handleCanPlayThrough); // checking canPlayThrough event fires when the browser estimate that the video can play with any lag
@@ -40,7 +41,13 @@ const VideoPlayer = ({ onVideoEnd }) => {
   return (
     <div className="video-container absolute w-[100vw] h-[100vh] z-[100]">
       <div ref={coverRef} className="w-[100vw] h-[100vh] absolute z-[2] bg-[#fff] " >
-        Loading...
+        <div className="absolute w-[100vw] h-[100vh] flex justify-center items-center z-[3]">
+          <p className="p1 text-[2.5rem] text-center">
+          Hold tight ! <br /> 
+          <span className="text-[1.3rem] tracking-wide">an extraordinary experience is loading just for you!</span>
+          </p>
+        </div>
+        <IntroPage/>
       </div>
       <video ref={videoRef}  muted playsInline className="w-[100%] h-[100%] object-cover " >
         <source src={Vid} type="video/mp4" />
