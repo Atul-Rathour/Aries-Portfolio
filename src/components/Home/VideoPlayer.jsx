@@ -16,7 +16,7 @@ const VideoPlayer = ({ onVideoEnd }) => {
     };
 
     const handleCanPlayThrough = () => {
-      setIsLoaded(false); // the video has loaded
+      setIsLoaded(true); // the video has loaded
     }
 
     videoElement.addEventListener('canplaythrough', handleCanPlayThrough); // checking canPlayThrough event fires when the browser estimate that the video can play with any lag
