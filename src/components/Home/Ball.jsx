@@ -20,7 +20,7 @@ const Ball = (props) => {
       <mesh castShadow receiveShadow scale={2.75}>
         <icosahedronGeometry args={[1, 1]} />
         <meshStandardMaterial
-          color='cyan'
+          color="cyan"
           metalness={0.7}
           roughness={0.25}
           polygonOffset
@@ -40,8 +40,27 @@ const Ball = (props) => {
 };
 
 const BallCanvas = ({ icon }) => {
+  const canvas = document.createElement("canvas");
+  const gl = canvas.getContext("webgl2") || canvas.getContext("webgl");
+  if (!gl) {
+    console.error(
+      "WebGL is not supported on this browser. 3D content may not be available."
+    );
+    // Optionally, provide fallback content or show an error message to users
+    return (
+      <div>
+        <h1>
+          Your browser does not support WebGL. Please try a different browser.
+        </h1>
+      </div>
+    );
+  }
   return (
-    <Canvas frameloop="demand" dpr={[1, 2]} gl={{ preserveDrawingBuffer: true }}>
+    <Canvas
+      frameloop="demand"
+      dpr={[1, 2]}
+      gl={{ preserveDrawingBuffer: true }}
+    >
       <Suspense fallback={<CanvasLoader />}>
         <OrbitControls enableZoom={false} enableDamping={true} />
         <Ball imgUrl={icon} />

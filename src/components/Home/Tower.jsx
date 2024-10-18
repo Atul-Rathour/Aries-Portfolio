@@ -19,6 +19,21 @@ const Tower = () => {
 };
 
 const TowerCanvas = () => {
+  const canvas = document.createElement("canvas");
+  const gl = canvas.getContext("webgl2") || canvas.getContext("webgl");
+  if (!gl) {
+    console.error(
+      "WebGL is not supported on this browser. 3D content may not be available."
+    );
+    // Optionally, provide fallback content or show an error message to users
+    return (
+      <div>
+        <h1>
+          Your browser does not support WebGL. Please try a different browser.
+        </h1>
+      </div>
+    );
+  }
   return (
     <Canvas
       shadows
@@ -40,7 +55,6 @@ const TowerCanvas = () => {
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 2}
         />
-
         <Stage
           adjustCamera={false} // Do not automatically adjust the camera
           intensity={1} // Ambient light intensity
@@ -48,7 +62,6 @@ const TowerCanvas = () => {
         >
           <Tower />
         </Stage>
-
         <spotLight
           position={[1, 10, 0]} // Position the spotlight as needed
           angle={0.5}
@@ -60,9 +73,8 @@ const TowerCanvas = () => {
           shadow-mapSize-height={1024}
           shadow-bias={-0.0001}
         />
-
-        <ambientLight intensity={1} /> {/* Add ambient light to fill in shadows */}
-
+        <ambientLight intensity={1} />{" "}
+        {/* Add ambient light to fill in shadows */}
         <Preload all />
       </Suspense>
     </Canvas>
