@@ -28,7 +28,7 @@ const Home = () => {
           <Page4 />
           <Slider2 />
           <Page3 />
-          <div className="mobile:none lg:block" >
+          <div className="hidden lg:block" >
             <Page5 />
           </div>
           <Footer />
