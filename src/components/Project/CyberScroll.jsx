@@ -41,7 +41,7 @@ const CyberScroll = ({ scrollRef }) => {
     const loadImages = async () => {
       try {
         const loadedImages = await Promise.all(
-          [...new Array(300)].map((_, i) =>
+          [...new Array(180)].map((_, i) =>
             // createImage(`./images/male${(i + 1).toString().padStart(4, "0")}.webp`)
           createImage(
             `./image_sequence/10${(i + 1).toString().padStart(4, "0")}.webp`
