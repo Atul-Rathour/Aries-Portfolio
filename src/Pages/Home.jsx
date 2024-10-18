@@ -28,7 +28,9 @@ const Home = () => {
           <Page4 />
           <Slider2 />
           <Page3 />
-          <Page5 />
+          <div className="mobile:none lg:block" >
+            <Page5 />
+          </div>
           <Footer />
         </>
       )}
