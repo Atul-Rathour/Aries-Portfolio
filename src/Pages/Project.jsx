@@ -10,7 +10,7 @@ const Project = ({ BG }) => {
     BG(Light);
     const timer = setTimeout(() => {
       setIsLoaded(true);
-    }, 2000); // Adjust this time based on your actual loading time
+    }, 4000); // Adjust this time based on your actual loading time
 
     return () => clearTimeout(timer);
   }, []);
