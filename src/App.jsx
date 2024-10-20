@@ -11,13 +11,12 @@ import ArrowPointer from "./components/ArrowPointer"; // Import ArrowPointer
 import { IntroPage } from "./components/Home/IntroPage";
 
 const App = () => {
-
-  const [BG, SetBG] = useState(Dark)
+  const [BG, SetBG] = useState(Dark);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadAssets = async () => {
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      await new Promise((resolve) => setTimeout(resolve, 3000));
       setIsLoading(false);
     };
 
@@ -27,21 +26,25 @@ const App = () => {
   if (isLoading) {
     return (
       <>
-        <div className="absolute w-[100vw] h-[100vh] flex justify-center items-center z-[2]  " >
-          <p className="p1 text-center text-[2rem] " >Loading...</p>
+        <div className="absolute w-[100vw] h-[100vh] flex justify-center items-center z-[52]  ">
+          <p className="p1 absolute z-[53] text-[2.5rem] text-center">
+            Hold tight ! <br />
+            <span className="text-[1.3rem] tracking-wide">
+              an extraordinary experience is loading just for you!
+            </span>
+          </p>
+          <IntroPage />
         </div>
-
-        <IntroPage/>
       </>
-    ) ;
+    );
   }
 
   return (
-    <div className="App">     
+    <div className="App">
       <>
         <img src={BG} alt="Background" className="background fixed" />
         <Navbar />
-        <div className="cursor" >
+        <div className="cursor">
           <ArrowPointer />
         </div>
         <Router>

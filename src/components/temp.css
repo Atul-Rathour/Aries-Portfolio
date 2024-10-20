@@ -28,6 +28,18 @@
     text-shadow: 0 0 0px #fff, 0 0 4px #fff, 0 0 29px #fff, 0 0 12px #228dff, 0 0 9px #228dff, 0 0 30px #228dff;
 }
 
+.light-p1 {
+    position: relative;
+    color: #0066cc; /* A darker blue for better contrast on white */
+    text-shadow: 
+        0 0 1px #0066cc,
+        0 0 2px #0066cc,
+        0 0 3px #0066cc,
+        0 0 4px #66c2c5,
+        0 0 5px #66c2c5,
+        0 0 6px #66c2c5;
+    font-weight: bold;
+}
 
 .p2 {
     position: relative;
