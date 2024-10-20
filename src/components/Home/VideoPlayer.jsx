@@ -52,10 +52,13 @@ const VideoPlayer = ({ onVideoEnd }) => {
 
   return (
     <div className="video-container absolute w-[100vw] h-[100vh] z-[100]">
-      <div ref={coverRef} className="w-[100vw] h-[100vh] absolute z-[2] bg-[#fff] transition-opacity duration-500">
+      <div ref={coverRef} className="w-[100vw] h-[100vh] absolute z-[2] transition-opacity duration-500">
         <div className="absolute w-[100vw] h-[100vh] flex justify-center items-center z-[3]">
           <p className="p1 text-[2.5rem] text-center">
-            {isBuffering ? "Buffering..." : (
+            {isBuffering ? <>
+                Hold tight ! <br /> 
+                <span className="text-[1.3rem] tracking-wide">an extraordinary experience is loading just for you!</span>
+              </>  : (
               <>
                 Hold tight ! <br /> 
                 <span className="text-[1.3rem] tracking-wide">an extraordinary experience is loading just for you!</span>
