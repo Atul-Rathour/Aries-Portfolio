@@ -1,60 +1,80 @@
-// VideoPlayer.js
 import React, { useState, useEffect, useRef } from "react";
 import Vid from '../../assets/video/Intro.mp4'
 import { IntroPage } from "./IntroPage";
 
 const VideoPlayer = ({ onVideoEnd }) => {
   const videoRef = useRef(null);
-  const [isLoaded, setIsLoaded] = useState(false); // adding a isloading to check the video is loaded
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isBuffering, setIsBuffering] = useState(true);
   const coverRef = useRef(null);
 
   useEffect(() => {
     const videoElement = videoRef.current;
 
     const handleVideoEnd = () => {
-      onVideoEnd(); // Notify parent component that video has ended
+      onVideoEnd();
     };
 
     const handleCanPlayThrough = () => {
-      setIsLoaded(true); // the video has loaded
-    }
+      setIsLoaded(true);
+      setIsBuffering(false);
+    };
 
-    videoElement.addEventListener('canplaythrough', handleCanPlayThrough); // checking canPlayThrough event fires when the browser estimate that the video can play with any lag
+    const handleWaiting = () => {
+      setIsBuffering(true);
+    };
+
+    const handlePlaying = () => {
+      setIsBuffering(false);
+    };
+
+    videoElement.addEventListener('canplaythrough', handleCanPlayThrough);
     videoElement.addEventListener("ended", handleVideoEnd);
+    videoElement.addEventListener("waiting", handleWaiting);
+    videoElement.addEventListener("playing", handlePlaying);
 
-    videoElement.load()
+    videoElement.load();
 
     return () => {
-      videoElement.removeEventListener('canplaythrough', handleCanPlayThrough); // removing the event listener when the component is unmounted
+      videoElement.removeEventListener('canplaythrough', handleCanPlayThrough);
       videoElement.removeEventListener("ended", handleVideoEnd);
+      videoElement.removeEventListener("waiting", handleWaiting);
+      videoElement.removeEventListener("playing", handlePlaying);
     };
   }, [onVideoEnd]);
 
   useEffect(() => {
     if(isLoaded && coverRef.current){
-      coverRef.current.style.opacity = 0; // setting the cover to transparent when the video is loaded
-      videoRef.current.play()
+      coverRef.current.style.opacity = 0;
+      videoRef.current.play();
     }
-  }, [isLoaded])
-
+  }, [isLoaded]);
 
   return (
     <div className="video-container absolute w-[100vw] h-[100vh] z-[100]">
-      <div ref={coverRef} className="w-[100vw] h-[100vh] absolute z-[2] bg-[#fff] " >
+      <div ref={coverRef} className="w-[100vw] h-[100vh] absolute z-[2] bg-[#fff] transition-opacity duration-500">
         <div className="absolute w-[100vw] h-[100vh] flex justify-center items-center z-[3]">
           <p className="p1 text-[2.5rem] text-center">
-          Hold tight ! <br /> 
-          <span className="text-[1.3rem] tracking-wide">an extraordinary experience is loading just for you!</span>
+            {isBuffering ? "Buffering..." : (
+              <>
+                Hold tight ! <br /> 
+                <span className="text-[1.3rem] tracking-wide">an extraordinary experience is loading just for you!</span>
+              </>
+            )}
           </p>
         </div>
         <IntroPage/>
       </div>
-      <video ref={videoRef}  muted playsInline className="w-[100%] h-[100%] object-cover " >
+      <video 
+        ref={videoRef}  
+        muted 
+        playsInline 
+        className="w-[100%] h-[100%] object-cover"
+        preload="auto"
+      >
         <source src={Vid} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-
-      
     </div>
   );
 };
