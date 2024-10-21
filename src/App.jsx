@@ -27,7 +27,7 @@ const App = () => {
     return (
       <>
         <div className="absolute w-[100vw] h-[100vh] flex justify-center items-center z-[52]  ">
-          <p className="p1 absolute z-[53] text-[2.5rem] text-center">
+          <p className="p1 absolute z-[3] text-[2.5rem] text-center">
             Hold tight ! <br />
             <span className="text-[1.3rem] tracking-wide">
               an extraordinary experience is loading just for you!
