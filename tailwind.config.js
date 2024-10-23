@@ -26,7 +26,7 @@ export default {
         card: '0px 1px 2px 0px rgba(0, 0, 0, 0.05)'
       },
       screens: {
-        'mobile': '400px'
+        'mobile': '320px'
       }
     },
   },
