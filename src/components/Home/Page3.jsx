@@ -99,11 +99,11 @@ const Page3 = () => {
           <div>
             <div className="mt-3 lg:mt-0 w-[100%] h-[100%]">
               <div className="absolute w-[60%] lg:w-[50%] -mt-[5rem]"></div>
-              <div className="relative flex justify-center p-5 lg:p-6 xl:p-6 2xl:p-8 3xl:p-9 h-[80vh] ">
+              <div className="relative flex justify-center items-center p-5 lg:p-6 xl:p-6 2xl:p-8 3xl:p-9 h-[80vh] ">
                 <div className="absolute top-0 left-0 w-4 h-full border-t border-l border-b border-[#66C2C5]"></div>
                 <div className="absolute top-0 right-0 w-4 h-full border-t border-r border-b border-[#66C2C5]"></div>
 
-                <div className="absolute w-full h-[100%] -top-[10%] -left-[1.5%]">
+                <div className="relative flex justify-center items-center mobile:w-[70%] mobile:h-[70%]  lg:w-full lg:h-[100%] -top-[10%] -left-[1.5%]">
                   <TowerCanvas />
                 </div>
 

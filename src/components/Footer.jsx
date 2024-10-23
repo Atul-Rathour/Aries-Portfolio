@@ -28,7 +28,7 @@ const Footer = () => {
 
   return (
     <>
-      <div className="lg:grid lg:grid-col-6 lg:gap-10 relative w-[100%] h-[100vh] mt-[40vh] overflow-hidden elem-1 mobile:mt-[20vh] ">
+      <div className="lg:grid lg:grid-col-6 lg:gap-10 relative mobile:h-[130vh] w-[100%] lg:h-[100vh] mt-[40vh] overflow-hidden elem-1 mobile:mt-[20vh] ">
         <div className="w-[40%] absolute bottom-0 left-0 h-[3.5rem] mobile:h-[4.5rem] z-[2] flex justify-center items-center ">
           <img
             src={Background}
@@ -50,7 +50,7 @@ const Footer = () => {
             }}
           ></div>
 
-          <p className="text-[#66C2C5] text-[1.5rem] relative">
+          <p className="text-[#66C2C5] mobile:text-[1rem] lg:text-[1.5rem] relative">
             {" "}
             Check out more pages{" "}
           </p>
@@ -77,7 +77,7 @@ const Footer = () => {
             }}
           ></div>
 
-          <p className="p1 text-[1.3rem] tracking-wide ">
+          <p className="p1 lg:text-[1.3rem] mobile:text-[1rem] tracking-wide ">
             Design by Atul Rathour
           </p>
         </div>
@@ -132,11 +132,11 @@ const Footer = () => {
           className="absolute w-[100%] h-[100%] object-cover"
         />
 
-        <div className="mt-[10rem] ms-[2rem] relative  mobile:mt-[8rem]">
+        <div className="mt-[10rem] lg:ms-[2rem] mobile:ms-[1rem] relative  mobile:mt-[8rem]">
           <p className="p1 text-[3rem] mobile:text-[1.5rem] relative z-[2] ">
             Wow, You've made this far!
           </p>
-          <p className="p1 text-[3rem] mobile:text-[1.5rem] relative left-[4rem] z-[1]">
+          <p className="p1 text-[3rem] mobile:text-[1.5rem] relative lg:left-[4rem] mobile:left-[2rem]   z-[1]">
             Glad you're loving this journey
           </p>
         </div>
@@ -308,17 +308,17 @@ const Footer = () => {
         />
       </div>
 
-      <div className="mt-[10vh] w-[100%] h-[10vh] mb-[5vh] border-t border-b border-[#66C2C5] flex justify-between items-center flex-wrap pl-[4rem] pr-[4rem]">
-        <a href="/" className="p1 text-[1.35rem]">
+      <div className="mt-[10vh] mobile:gap-[1rem] w-[100%] h-[10vh] mb-[5vh] border-t border-b border-[#66C2C5] flex justify-between items-center flex-wrap pl-[4rem] pr-[4rem]">
+        <a href="/" className="p1 mobile:text-[1rem] lg:text-[1.35rem]">
           Home
         </a>
-        <a href="/Projects" className="p1 text-[1.35rem]">
+        <a href="/Projects" className="p1  mobile:text-[1rem] lg:text-[1.35rem]">
           Projects
         </a>
-        <a href="/About" className="p1 text-[1.35rem]">
+        <a href="/About" className="p1 mobile:text-[1rem] lg:text-[1.35rem]">
           About
         </a>
-        <a href="/Contact" className="p1 text-[1.35rem]">
+        <a href="/Contact" className="p1 mobile:text-[1rem] lg:text-[1.35rem]">
           Contact
         </a>
       </div>

@@ -100,7 +100,7 @@ const Page2 = () => {
       
       <div
         ref={boxRef}
-        className="main lg:grid grid-cols-11 gap-10 ms-20 me-20 mt-20"
+        className="main lg:grid grid-cols-11 mobile:ms-5 mobile:me-5 gap-10 lg:ms-20 lg:me-20 mt-20"
       >
         <div className="relative flex flex-col justify-between col-span-5 ">
           <div>
