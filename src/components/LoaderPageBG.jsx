@@ -1,9 +1,9 @@
 "use client";
-import { cn } from '../libs/utils';
+import { cn } from './libs/utils';
 import { motion, AnimatePresence } from "framer-motion";
 import React, { useRef, useState, useEffect } from "react";
 
-export const IntroPage = ({
+export const LoaderPageBG = ({
   children,
   className
 }) => {

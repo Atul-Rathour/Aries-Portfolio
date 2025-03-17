@@ -7,67 +7,43 @@ import Slider2 from "../components/Home/Slider2";
 import Page5 from "../components/Home/Page5";
 import Page3 from "../components/Home/Page3";
 import Footer from "../components/Footer";
-import VideoPlayer from "../components/Home/VideoPlayer";
-import { IntroPage } from "../components/Home/IntroPage";
+import IntroVideo from "../components/Home/IntroVideo";
+import  LoaderPage  from "../components/LoaderPage";
 
-const Home = ({ initialLoading }) => {
-  const [videoPlayed, setVideoPlayed] = useState(false); // Initially, set to false
-  const [videoLoaded, setVideoLoaded] = useState(false);
+const Home = ({ initialLoading, loadingProgress = 0 }) => {
   const [showIntro, setShowIntro] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [showContent, setShowContent] = useState(false);
 
-  // Handle video end event
-  const handleVideoEnd = () => {
-    setVideoPlayed(true); // Set videoPlayed to true once video ends
-  };
-
-  // Handle video loaded event
-  const handleVideoLoaded = (loaded) => {
-    setVideoLoaded(loaded);
-  };
-
-  // Effect to handle the transition from initial loading to video loading
+  // Handle initial loading
   useEffect(() => {
-    if (!initialLoading && videoLoaded) {
-      // Both initial assets and video are loaded, hide intro after a short delay
-      const timer = setTimeout(() => {
+    if (!initialLoading) {
+      // Initial assets are loaded, now we can check if we need to show the intro video
+      const hasPlayed = localStorage.getItem('introVideoPlayed');
+      if (hasPlayed === 'true') {
+        // Skip intro for returning visitors
         setShowIntro(false);
-      }, 500);
-      return () => clearTimeout(timer);
+        setShowContent(true);
+      }
     }
-  }, [initialLoading, videoLoaded]);
+  }, [initialLoading]);
+
+  // Handle video end
+  const handleVideoEnd = () => {
+    setShowIntro(false);
+    setShowContent(true);
+  };
 
   return (
     <div>
-      {!videoPlayed ? (
-        <div>
-          {showIntro && !videoLoaded && (
-            <IntroPage>
-              <div className="absolute z-[3] text-center">
-                <p className="p1 text-[2.5rem]">
-                  Hold tight ! <br />
-                  <span className="text-[1.3rem] tracking-wide">
-                    an extraordinary experience is loading just for you!
-                  </span>
-                </p>
-                <div className="mt-8 w-64 h-2 bg-black/10 dark:bg-white/10 rounded-full overflow-hidden mx-auto">
-                  <div 
-                    className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all duration-300 ease-out"
-                    style={{ width: `${loadingProgress}%` }}
-                  ></div>
-                </div>
-                <p className="text-[1rem] mt-2">
-                  {Math.round(loadingProgress)}%
-                </p>
-              </div>
-            </IntroPage>
-          )}
-          <VideoPlayer 
-            onVideoEnd={handleVideoEnd} 
-            onVideoLoaded={handleVideoLoaded}
-          />
-        </div>
-      ) : (
+      {initialLoading && (
+        <LoaderPage loadingProgress={loadingProgress} />
+      )}
+      
+      {!initialLoading && showIntro && (
+        <IntroVideo onVideoEnd={handleVideoEnd} />
+      )}
+      
+      {showContent && (
         <>
           <Page1 />
           <Page2 />

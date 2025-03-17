@@ -8,7 +8,7 @@ import Contact from "./Pages/Contact";
 import Home from "./Pages/Home";
 import Project from "./Pages/Project";
 import ArrowPointer from "./components/ArrowPointer";
-import { IntroPage } from "./components/Home/IntroPage";
+import  LoaderPage  from "./components/LoaderPage";
 import IntroVideo from "./assets/video/Intro.mp4";
 
 // List of critical assets to preload
@@ -58,10 +58,10 @@ const App = () => {
                 
                 img.src = src;
               } else if (src.endsWith('.mp4') || src.endsWith('.webm')) {
-                // Preload video
+                // Preload video metadata only, not the full video
                 const video = document.createElement('video');
                 
-                video.oncanplaythrough = () => {
+                video.onloadedmetadata = () => {
                   if (mounted) {
                     setLoadingProgress(prev => 
                       Math.min(90, prev + (90 / criticalAssets.length))
@@ -76,6 +76,7 @@ const App = () => {
                 };
                 
                 video.src = src;
+                video.preload = "metadata"; // Only load metadata, not the full video
                 video.load();
               } else {
                 // For other asset types
@@ -145,26 +146,7 @@ const App = () => {
   return (
     <>
       {isLoading ? (
-        <IntroPage>
-          <div className="absolute z-[3] text-center">
-            <p className="p1 text-[2.5rem]">
-              Hold tight ! <br />
-              <span className="text-[1.3rem] tracking-wide">
-                an extraordinary experience is loading just for you!
-              </span>
-            </p>
-            <div className="mt-8 w-64 h-2 bg-black/10 dark:bg-white/10 rounded-full overflow-hidden mx-auto">
-              <div 
-                ref={progressRef}
-                className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all duration-300 ease-out"
-                style={{ width: `${loadingProgress}%` }}
-              ></div>
-            </div>
-            <p className="text-[1rem] mt-2">
-              {Math.round(loadingProgress)}%
-            </p>
-          </div>
-        </IntroPage>
+        <LoaderPage loadingProgress={loadingProgress} />
       ) : (
         <div className="App">
           <img src={BG} alt="Background" className="background fixed" />
@@ -174,7 +156,7 @@ const App = () => {
           </div>
           <Router>
             <Routes>
-              <Route path="/" element={<Home initialLoading={isLoading} />} />
+              <Route path="/" element={<Home initialLoading={isLoading} loadingProgress={loadingProgress} />} />
               <Route path="/Projects" element={<Project BG={SetBG} />} />
               <Route path="/About" element={<About />} />
               <Route path="/Contact" element={<Contact />} />
