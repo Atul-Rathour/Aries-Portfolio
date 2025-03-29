@@ -8,43 +8,49 @@ import Page5 from "../components/Home/Page5";
 import Page3 from "../components/Home/Page3";
 import Footer from "../components/Footer";
 import IntroVideo from "../components/Home/IntroVideo";
-import  LoaderPage  from "../components/LoaderPage";
+import LoaderPage from "../components/LoaderPage";
 
-const Home = ({ initialLoading, loadingProgress = 0 }) => {
-  const [showIntro, setShowIntro] = useState(true);
+const Home = () => {
   const [showContent, setShowContent] = useState(false);
+  const [isPreloading, setIsPreloading] = useState(true);
 
-  // Handle initial loading
+  // Preload all components
   useEffect(() => {
-    if (!initialLoading) {
-      // Initial assets are loaded, now we can check if we need to show the intro video
-      const hasPlayed = localStorage.getItem('introVideoPlayed');
-      if (hasPlayed === 'true') {
-        // Skip intro for returning visitors
-        setShowIntro(false);
-        setShowContent(true);
-      }
-    }
-  }, [initialLoading]);
+    const preloadComponents = async () => {
+      // Preload all images and assets
+      const images = document.querySelectorAll('img');
+      const imagePromises = Array.from(images).map(img => {
+        if (img.complete) return Promise.resolve();
+        return new Promise((resolve, reject) => {
+          img.onload = resolve;
+          img.onerror = reject;
+        });
+      });
 
-  // Handle video end
+      try {
+        await Promise.all(imagePromises);
+        setIsPreloading(false);
+      } catch (error) {
+        console.error('Error preloading assets:', error);
+        setIsPreloading(false);
+      }
+    };
+
+    preloadComponents();
+  }, []);
+
   const handleVideoEnd = () => {
-    setShowIntro(false);
     setShowContent(true);
   };
 
   return (
-    <div>
-      {initialLoading && (
-        <LoaderPage loadingProgress={loadingProgress} />
-      )}
-      
-      {!initialLoading && showIntro && (
+    <div className="relative">
+      {!showContent && (
         <IntroVideo onVideoEnd={handleVideoEnd} />
       )}
       
       {showContent && (
-        <>
+        <div className={`transition-opacity duration-1000 ${isPreloading ? 'opacity-0' : 'opacity-100'}`}>
           <Page1 />
           <Page2 />
           <Slider />
@@ -55,7 +61,7 @@ const Home = ({ initialLoading, loadingProgress = 0 }) => {
             <Page5 />
           </div>
           <Footer />
-        </>
+        </div>
       )}
     </div>
   );

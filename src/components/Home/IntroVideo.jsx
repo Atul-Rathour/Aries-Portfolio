@@ -1,41 +1,32 @@
 import React, { useState, useEffect, useRef } from "react";
 import Vid from '../../assets/video/Intro.mp4'
-import { LoaderPageBG } from "../LoaderPage";
+import LoaderPage, { LoaderPageBG } from "../LoaderPage";
 
 const IntroVideo = ({ onVideoEnd }) => {
   const videoRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isBuffering, setIsBuffering] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
-  const coverRef = useRef(null);
   const [loadingText, setLoadingText] = useState("Loading video...");
   const [hasVideoPlayed, setHasVideoPlayed] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
 
-  // Check if the video has been played before
+  // Preload video
   useEffect(() => {
-    const hasPlayed = localStorage.getItem('introVideoPlayed');
-    if (hasPlayed === 'true') {
-      setHasVideoPlayed(true);
-      // Skip video for returning visitors
-      if (onVideoEnd) {
-        onVideoEnd();
-      }
-    }
-  }, [onVideoEnd]);
-
-  useEffect(() => {
-    if (hasVideoPlayed) return; // Skip video setup for returning visitors
+    if (hasVideoPlayed) return;
     
     const videoElement = videoRef.current;
     if (!videoElement) return;
 
-    const handleVideoEnd = () => {
-      // Mark that the video has been played
-      localStorage.setItem('introVideoPlayed', 'true');
-      setHasVideoPlayed(true);
-      if (onVideoEnd) {
-        onVideoEnd();
-      }
+    // Set video loading priority
+    videoElement.preload = "auto";
+    
+    // Start loading the video immediately
+    videoElement.load();
+
+    const handleLoadedData = () => {
+      setIsVideoReady(true);
+      setLoadingText("Video ready to play!");
     };
 
     const handleCanPlayThrough = () => {
@@ -65,18 +56,24 @@ const IntroVideo = ({ onVideoEnd }) => {
       }
     };
 
+    const handleVideoEnd = () => {
+      setHasVideoPlayed(true);
+      if (onVideoEnd) {
+        onVideoEnd();
+      }
+    };
+
     // Add event listeners
+    videoElement.addEventListener('loadeddata', handleLoadedData);
     videoElement.addEventListener('canplaythrough', handleCanPlayThrough);
     videoElement.addEventListener("ended", handleVideoEnd);
     videoElement.addEventListener("waiting", handleWaiting);
     videoElement.addEventListener("playing", handlePlaying);
     videoElement.addEventListener("progress", handleProgress);
 
-    // Start loading the video
-    videoElement.load();
-
     return () => {
       // Clean up event listeners
+      videoElement.removeEventListener('loadeddata', handleLoadedData);
       videoElement.removeEventListener('canplaythrough', handleCanPlayThrough);
       videoElement.removeEventListener("ended", handleVideoEnd);
       videoElement.removeEventListener("waiting", handleWaiting);
@@ -85,34 +82,32 @@ const IntroVideo = ({ onVideoEnd }) => {
     };
   }, [hasVideoPlayed, onVideoEnd]);
 
-  // Play video when loaded
+  // Play video when ready
   useEffect(() => {
-    if (hasVideoPlayed) return; // Skip for returning visitors
+    if (hasVideoPlayed || !isVideoReady) return;
     
-    if (isLoaded && videoRef.current) {
-      // Fade out the cover
-      if (coverRef.current) {
-        coverRef.current.style.opacity = 0;
-      }
-      
-      // Try to play the video
-      videoRef.current.play().catch(error => {
-        console.error("Error playing video:", error);
-        // Try to play again with user interaction if autoplay fails
-        const playOnInteraction = () => {
-          videoRef.current.play().catch(e => {
-            console.error("Still can't play:", e);
-            // If still can't play, skip the video
-            if (onVideoEnd) {
-              onVideoEnd();
-            }
-          });
-          document.removeEventListener('click', playOnInteraction);
-        };
-        document.addEventListener('click', playOnInteraction);
-      });
+    if (videoRef.current) {
+      const playVideo = async () => {
+        try {
+          await videoRef.current.play();
+        } catch (error) {
+          console.error("Error playing video:", error);
+          // Try to play again with user interaction if autoplay fails
+          const playOnInteraction = () => {
+            videoRef.current.play().catch(e => {
+              console.error("Still can't play:", e);
+              if (onVideoEnd) {
+                onVideoEnd();
+              }
+            });
+            document.removeEventListener('click', playOnInteraction);
+          };
+          document.addEventListener('click', playOnInteraction);
+        }
+      };
+      playVideo();
     }
-  }, [isLoaded, hasVideoPlayed, onVideoEnd]);
+  }, [isVideoReady, hasVideoPlayed, onVideoEnd]);
 
   // If the video has already been played, don't render anything
   if (hasVideoPlayed) {
@@ -122,26 +117,7 @@ const IntroVideo = ({ onVideoEnd }) => {
   return (
     <div className="video-container absolute w-[100vw] h-[100vh] z-[100]">
       {!isLoaded && (
-        <div ref={coverRef} className="w-[100vw] h-[100vh] absolute z-[2] transition-opacity duration-500">
-          <div className="absolute w-[100%] h-[100vh] flex justify-center items-center flex-col z-[3]">
-            <p className="p1 text-[2.5rem] text-center">
-              Hold tight ! <br /> 
-              <span className="text-[1.3rem] tracking-wide">
-                an extraordinary experience is loading just for you!
-              </span>
-            </p>
-            <div className="mt-8 w-64 h-2 bg-black/10 dark:bg-white/10 rounded-full overflow-hidden mx-auto">
-              <div 
-                className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all duration-300 ease-out"
-                style={{ width: `${loadingProgress}%` }}
-              ></div>
-            </div>
-            <p className="text-[1rem] mt-2">
-              {loadingText}
-            </p>
-          </div>
-          <LoaderPageBG />
-        </div>
+        <LoaderPage loadingProgress={loadingProgress} />
       )}
       <video 
         ref={videoRef}  
@@ -153,6 +129,21 @@ const IntroVideo = ({ onVideoEnd }) => {
         <source src={Vid} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
+
+
+      <button 
+        onClick={() => {
+          if (videoRef.current) {
+            videoRef.current.pause();
+            if (onVideoEnd) {
+              onVideoEnd();
+            }
+          }
+        }}
+        className="p1 absolute bottom-8 left-1/2 -translate-x-1/2 px-6 py-3 text-lg border-2 border-[#66C2C5] rounded-lg hover:bg-[#66C2C5] hover:text-black transition-colors duration-300"
+      >
+        Skip Intro
+      </button>
     </div>
   );
 };
