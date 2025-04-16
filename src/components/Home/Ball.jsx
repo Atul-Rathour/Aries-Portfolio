@@ -13,16 +13,16 @@ const Ball = (props) => {
   const [decal] = useTexture([props.imgUrl]);
 
   return (
-    <Float speed={2.5} rotationIntensity={1.5} floatIntensity={3}>
-      <ambientLight intensity={0.8} />
-      <directionalLight position={[0, 0, 0.05]} />
+    <Float speed={3} rotationIntensity={2} floatIntensity={3}>
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[0, 0, 0.05]} intensity={0.8} />
 
       <mesh castShadow receiveShadow scale={2.75}>
-        <icosahedronGeometry args={[1, 1]} />
+        <icosahedronGeometry args={[1, 1]} /> {/* Back to original smoothness */}
         <meshStandardMaterial
           color="cyan"
-          metalness={0.7}
-          roughness={0.25}
+          metalness={0.6}
+          roughness={0.3}
           polygonOffset
           polygonOffsetFactor={-5}
           flatShading
@@ -40,13 +40,10 @@ const Ball = (props) => {
 };
 
 const BallCanvas = ({ icon }) => {
-  const canvas = document.createElement("canvas");
-  const gl = canvas.getContext("webgl2") || canvas.getContext("webgl");
-  if (!gl) {
+  if (!window.WebGLRenderingContext) {
     console.error(
       "WebGL is not supported on this browser. 3D content may not be available."
     );
-    // Optionally, provide fallback content or show an error message to users
     return (
       <div>
         <h1>
@@ -55,14 +52,19 @@ const BallCanvas = ({ icon }) => {
       </div>
     );
   }
+
   return (
     <Canvas
-      frameloop="demand"
+      frameloop="always"
       dpr={[1, 2]}
-      gl={{ preserveDrawingBuffer: true }}
+      gl={{ preserveDrawingBuffer: true, antialias: true }}
     >
       <Suspense fallback={<CanvasLoader />}>
-        <OrbitControls enableZoom={false} enableDamping={true} />
+        <OrbitControls
+          enableZoom={false}
+          enableDamping={true}
+          dampingFactor={0.05}
+        />
         <Ball imgUrl={icon} />
       </Suspense>
       <Preload all />

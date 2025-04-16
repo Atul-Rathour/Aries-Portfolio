@@ -16,32 +16,9 @@ const Page1 = () => {
       yoyo: true,
     });
 
-    const start = gsap.timeline()
-  
-  
-    start.from('.p1',{
-      x: -300,
-      opacity:0,
-      duration: 2,
-      ease: 'expo',
-      // delay: 2,  
-    })
+    
 
-    start.from('.p2',{
-      x: 300,
-      opacity:0,
-      duration: 1,
-      ease: 'expo',
-    })
-
-    start.fromTo('.Card', {
-      scale:0,
-      duration: 1
-    },{
-      scale:1,
-      duration: 1
-    }
-  )
+  
   }, []);
 
   const CardAnimtion = () => {
@@ -167,7 +144,7 @@ const Page1 = () => {
         </div>
 
         <div class="relative flex items-center justify-center lg:justify-between ">
-          <p className="p1 lg:text-[6rem] mobile:text-[4rem]">Aries</p>
+          <p className="p1 lg:text-[6rem] mobile:text-[4rem]">Atul</p>
 
           <div class="hidden md:flex w-[25%] h-[2.8rem] -mt-[2.8rem] overflow-hidden">
             <div class="w-[40%] h-full border-b border-[#66C2C5]"></div>
@@ -185,7 +162,7 @@ const Page1 = () => {
             </div>
             <div class="flex-grow w-auto h-full border-t border-[#66C2C5]"></div>
           </div>
-          <p className="p2 lg:text-[6rem] mobile:text-[4rem]">Creation</p>
+          <p className="p2 lg:text-[6rem] mobile:text-[4rem]">Rathour</p>
         </div>
       </div>
       <img src={Mark} alt="" className="mark" />

@@ -10,6 +10,7 @@ import Project from "./Pages/Project";
 import ArrowPointer from "./components/ArrowPointer";
 import  LoaderPage  from "./components/LoaderPage";
 import IntroVideo from "./assets/video/Intro.mp4";
+import LenisWrapper from "./utils/LenisWrapper";
 
 // List of critical assets to preload
 const criticalAssets = [
@@ -31,6 +32,8 @@ const App = () => {
         <LoaderPage loadingProgress={loadingProgress} />
       ) : (
         <div className="App">
+          <LenisWrapper>
+
           <img src={BG} alt="Background" className="background fixed" />
           <Navbar />
           <div className="cursor">
@@ -44,6 +47,7 @@ const App = () => {
               <Route path="/Contact" element={<Contact />} />
             </Routes>
           </Router>
+          </LenisWrapper>
         </div>
       )}
     </>

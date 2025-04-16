@@ -17,6 +17,29 @@ const Page2 = () => {
 
   const intervalRef = useRef(null); // Ref for the interval
   const boxRef = useRef(null);
+
+  useGSAP(() => {
+    gsap.fromTo(
+      ".test3",
+      {
+        width: "0%",
+        opacity: 0 },
+      {
+        width: "100%",
+        opacity: 1,
+        duration: 1,
+        scrollTrigger: {
+          trigger: '.main',
+          start: "top center",
+          end: "bottom center",
+          markers: true,
+        },
+      }
+    );
+  },[]);
+
+
+
   useEffect(() => {
     intervalRef.current = setInterval(() => {
       setPosition((prev) => {
@@ -38,66 +61,9 @@ const Page2 = () => {
     setImage(images[currentIndex]); // Update the image when the index changes
   }, [currentIndex]);
 
-  useGSAP(() => {
-    const tl1 = gsap.timeline({
-      scrollTrigger: {
-        trigger: boxRef.current,
-        start: "top center", // Start the animation when the top of the element hits the center of the viewport
-        end: "bottom top", // End the animation when the bottom of the element hits the top of the viewport
-        // scrub: true,          // Smoothly sync animation with scrolling
-        // markers: true,
-      },
-    });
-
-    tl1.from(".test3", {
-      width: 0,
-      height: 0,
-      duration: 1,
-    });
-    tl1.from(".content", {
-      scale: 0,
-      duration: 1,
-    });
-
-    const tl2 = gsap.timeline({
-      // delay: 1,
-      scrollTrigger: {
-        trigger: boxRef.current,
-        start: "top center", // Start the animation when the top of the element hits the center of the viewport
-        end: "bottom top", // End the animation when the bottom of the element hits the top of the viewport
-        // scrub: true,          // Smoothly sync animation with scrolling
-        markers: true,
-      },
-    });
-
-    tl2.from(".circle", {
-      scale: 0,
-      duration: 1,
-    });
-    tl2.from(".num", {
-      scale: 0,
-    });
-    tl2.set(".num",{
-      x:0
-    })
-    tl2.from(".line", {
-      width: 0,
-      duration: 1,
-    }),
-      tl2.from(".text1", {
-        y: -20,
-        opacity: 0,
-        duration: 0.5,
-      });
-    tl2.from(".text2", {
-      y: 20,
-      opacity: 0,
-      duration: 0.5,
-    });
-  });
+  
   return (
     <div>
-      
       <div
         ref={boxRef}
         className="main lg:grid grid-cols-11 mobile:ms-5 mobile:me-5 gap-10 lg:ms-20 lg:me-20 mt-20"
@@ -229,7 +195,9 @@ const Page2 = () => {
                 src={B}
                 className="absolute w-full h-full object-cover transition-opacity duration-500 ease-in-out"
                 style={{ opacity: 1 }}
-                alt="Background"s              />
+                alt="Background"
+                s
+              />
               <img
                 src={A}
                 className="absolute top-0 left-0 h-full object-left-bottom object-cover transition-all duration-[20ms] ease-linear"
