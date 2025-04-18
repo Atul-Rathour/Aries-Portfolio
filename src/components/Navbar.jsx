@@ -34,7 +34,7 @@ const Navbar = () => {
   });
 
   return (
-    <nav className="w-[98vw] absolute flex top-0 z-50 ps-10 justify-between pt-5 text-[#66C2C5]">
+    <nav className="w-[98vw] flex absolute mt2 top-0 z-50 lg:ps-10 mobile:ps-2 sm:ps-2 justify-between pt-5 text-[#66C2C5]">
       <div className="flex flex-col items-start gap-3 z-50">
         <a href="/" className="flex justify-center items-center">
           <img
@@ -52,7 +52,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="flex gap-2 p-1 text-[1.25rem] w-[250px] tracking-wider uppercase flex-col mt-2">
+      <div className="flex gap-2 p-1 text-[1.25rem] lg:w-[250px] mobile:w-[180px] sm:w-[200px]  tracking-wider uppercase flex-col lg:mt-2 mobile:mt-0 ">
         {navItems.map((item, index) => (
           <a
             href={item.href}
@@ -60,7 +60,7 @@ const Navbar = () => {
             className="flex w-full items-center gap-3 group"
           >
             <div
-              className="w-[10px] h-[10px] transition-all duration-500 ease-in-out group-hover:w-[5rem] group-hover:h-[1px]"
+              className="w-[10px] h-[10px] mobile:w-[8px] mobile:h-[8px] sm:w-[8px] sm:h-[8px] transition-all duration-500 ease-in-out group-hover:w-[5rem] group-hover:h-[1px]"
               style={{
                 backgroundColor: "#fff",
                 boxShadow:

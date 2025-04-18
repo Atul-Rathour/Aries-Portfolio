@@ -8,7 +8,7 @@ import Contact from "./Pages/Contact";
 import Home from "./Pages/Home";
 import Project from "./Pages/Project";
 import ArrowPointer from "./components/ArrowPointer";
-import  LoaderPage  from "./components/LoaderPage";
+import LoaderPage from "./components/LoaderPage";
 import IntroVideo from "./assets/video/Intro.mp4";
 import LenisWrapper from "./utils/LenisWrapper";
 
@@ -24,31 +24,29 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const progressRef = useRef(null);
-   
 
   return (
     <>
       {isLoading ? (
         <LoaderPage loadingProgress={loadingProgress} />
       ) : (
-        <div className="App">
-          <LenisWrapper>
-
-          <img src={BG} alt="Background" className="background fixed" />
-          <Navbar />
-          <div className="cursor">
-            <ArrowPointer />
+        <LenisWrapper>
+          <div className="App">
+            <Navbar />
+            <img src={BG} alt="Background" className="background" />
+            <div className="cursor">
+              <ArrowPointer />
+            </div>
+            <Router>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/Projects" element={<Project BG={SetBG} />} />
+                <Route path="/About" element={<About />} />
+                <Route path="/Contact" element={<Contact />} />
+              </Routes>
+            </Router>
           </div>
-          <Router>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/Projects" element={<Project BG={SetBG} />} />
-              <Route path="/About" element={<About />} />
-              <Route path="/Contact" element={<Contact />} />
-            </Routes>
-          </Router>
-          </LenisWrapper>
-        </div>
+        </LenisWrapper>
       )}
     </>
   );

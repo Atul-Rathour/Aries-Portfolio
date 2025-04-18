@@ -1,16 +1,21 @@
 import {
-  type SpringOptions,
   useMotionValueEvent,
   useScroll,
   useSpring,
 } from 'framer-motion';
 import { useCallback, useEffect, useRef } from 'react';
+import { throttle } from 'lodash';
 
 export interface UseScrollImageSequenceFramerCanvasProps {
-  onDraw: (img: HTMLImageElement, ctx: CanvasRenderingContext2D) => void;
-  keyframes: HTMLImageElement[];
+  onDraw: (img: ImageBitmap | null, ctx: CanvasRenderingContext2D) => void;
+  keyframes: ImageBitmap[];
   scrollOptions?: Parameters<typeof useScroll>[0];
-  springConfig?: SpringOptions;
+  springConfig?: {
+    damping?: number;
+    stiffness?: number;
+    restSpeed?: number;
+    restDelta?: number;
+  };
 }
 
 const useScrollImageSequenceFramerCanvas = ({
@@ -32,27 +37,28 @@ const useScrollImageSequenceFramerCanvas = ({
   const resizeCanvas = useCallback(() => {
     const canvas = canvasRef.current;
     if (canvas) {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
     }
   }, []);
 
   const renderImage = useCallback(
-    (progress: number) => {
+    throttle((progress: number) => {
       const canvas = canvasRef.current;
-      if (canvas) {
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-          const constraint = (n: number, min = 0, max = keyframes.length - 1) =>
-            Math.min(Math.max(n, min), max);
-          onDraw(
-            keyframes[constraint(Math.round(keyframes.length * progress))],
-            ctx,
-          );
-        }
-      }
-    },
-    [keyframes, onDraw],
+      if (!canvas) return;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const constraint = (n: number, min = 0, max = keyframes.length - 1) =>
+        Math.min(Math.max(n, min), max);
+      const index = constraint(Math.round(keyframes.length * progress));
+      onDraw(keyframes[index] || null, ctx);
+    }, 16), // Throttle to ~60fps
+    [keyframes, onDraw]
   );
 
   useEffect(() => {
@@ -61,25 +67,17 @@ const useScrollImageSequenceFramerCanvas = ({
       renderImage(progress.get());
     };
 
-    handleResize(); // Initial resize and render
+    handleResize();
     window.addEventListener('resize', handleResize);
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, [progress, renderImage, resizeCanvas]);
 
   useEffect(() => {
     if (keyframes.length > 0) {
-      const canvas = canvasRef.current;
-      if (canvas) {
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-          onDraw(keyframes[0], ctx);
-        }
-      }
+      renderImage(0);
     }
-  }, [keyframes, onDraw]);
+  }, [keyframes, renderImage]);
 
   useMotionValueEvent(progress, 'change', renderImage);
 

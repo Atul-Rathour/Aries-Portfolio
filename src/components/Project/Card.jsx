@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import MainLoader from "../MainLoader";
 
-const Card = ({ imgSrc, videoSrc, headline, techs }) => {
+const Card = ({ videoSrc, headline, techs }) => {
   const [isLoading, setisLoading] = useState(true);
   return (
-    <div class="relative mr-20 w-full xl:w-[35%] bg-white/[0.3] z-10 overflow-hidden">
+    <div class="relative lg:me-20 mobile:me-5 mobile:w-full xl:w-[35%] bg-white/[0.3] z-10 overflow-hidden">
       <a href="#" class="absolute top-0 left-0 w-full h-full z-10"></a>
       <div class="relative w-full h-auto aspect-[16/9] border">
         {/* <img

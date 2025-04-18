@@ -8,7 +8,6 @@ import Page5 from "../components/Home/Page5";
 import Page3 from "../components/Home/Page3";
 import Footer from "../components/Footer";
 import IntroVideo from "../components/Home/IntroVideo";
-import LoaderPage from "../components/LoaderPage";
 
 const Home = () => {
   const [showContent, setShowContent] = useState(false);
