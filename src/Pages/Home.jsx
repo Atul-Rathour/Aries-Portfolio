@@ -56,7 +56,7 @@ const Home = () => {
           <Page4 />
           <Slider2 />
           <Page3 />
-          <div className="hidden lg:block">
+          <div className="hidden xl:block">
             <Page5 />
           </div>
           <Footer />
