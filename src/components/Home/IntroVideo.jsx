@@ -1,149 +1,172 @@
+// Updated IntroVideo.jsx with accurate reveal during bar animation
 import React, { useState, useEffect, useRef } from "react";
-import Vid from '../../assets/video/Intro.mp4'
-import LoaderPage, { LoaderPageBG } from "../LoaderPage";
+import gsap from "gsap";
+import Vid from "../../assets/video/Intro.mp4";
+import LoaderPage from "../LoaderPage";
+import BG from "../../assets/images/background.png";
 
 const IntroVideo = ({ onVideoEnd }) => {
   const videoRef = useRef(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isBuffering, setIsBuffering] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
-  const [loadingText, setLoadingText] = useState("Loading video...");
-  const [hasVideoPlayed, setHasVideoPlayed] = useState(false);
-  const [isVideoReady, setIsVideoReady] = useState(false);
+  const barRef = useRef(null);
+  const containerRef = useRef(null);
+  const revealRef = useRef(null);
+  const [isFullyBuffered, setIsFullyBuffered] = useState(false);
 
-  // Preload video
+  const handleVideoEnd = () => {
+    const tl = gsap.timeline({
+      onComplete: () => {
+        if (onVideoEnd) onVideoEnd();
+      },
+    });
+
+    tl.set(revealRef.current, {
+      y: "100vh",
+      opacity: 1,
+      zIndex: 100,
+      // pin: true,
+    })
+      .to(barRef.current, {
+        y: "-100vh",
+        duration: 2,
+        ease: "power2.inOut",
+      })
+      .to(
+        revealRef.current,
+        {
+          y: "0vh",
+          duration: 2,
+          ease: "power2.inOut",
+        },
+        "<"
+      )
+      .to(
+        containerRef.current,
+        {
+          opacity: 0,
+          duration: 0.5,
+          onComplete: () => {
+            if (onVideoEnd) onVideoEnd();
+          },
+        },
+        "-=0.3"
+      );
+  };
+
   useEffect(() => {
-    if (hasVideoPlayed) return;
-    
     const videoElement = videoRef.current;
     if (!videoElement) return;
 
-    // Set video loading priority
     videoElement.preload = "auto";
-    
-    // Start loading the video immediately
     videoElement.load();
 
-    const handleLoadedData = () => {
-      setIsVideoReady(true);
-      setLoadingText("Video ready to play!");
-    };
-
-    const handleCanPlayThrough = () => {
-      setIsLoaded(true);
-      setIsBuffering(false);
-      setLoadingText("Video ready to play!");
-    };
-
-    const handleWaiting = () => {
-      setIsBuffering(true);
-      setLoadingText("Buffering video...");
-    };
-
-    const handlePlaying = () => {
-      setIsBuffering(false);
-    };
-
-    const handleProgress = () => {
+    const checkBuffering = () => {
       if (videoElement.buffered.length > 0) {
-        const bufferedEnd = videoElement.buffered.end(videoElement.buffered.length - 1);
         const duration = videoElement.duration;
-        if (duration > 0) {
-          const progress = Math.round((bufferedEnd / duration) * 100);
-          setLoadingProgress(progress);
-          setLoadingText(`Loading video: ${progress}%`);
+        const bufferedEnd = videoElement.buffered.end(
+          videoElement.buffered.length - 1
+        );
+        if (isNaN(duration) || !duration) {
+          setIsFullyBuffered(true);
+          return;
+        }
+        if (bufferedEnd >= duration - 0.1) {
+          setIsFullyBuffered(true);
+        } else {
+          const originalTime = videoElement.currentTime;
+          videoElement.currentTime = duration - 0.1;
+          videoElement.currentTime = originalTime;
         }
       }
     };
 
-    const handleVideoEnd = () => {
-      setHasVideoPlayed(true);
-      if (onVideoEnd) {
-        onVideoEnd();
-      }
-    };
+    const handleError = () => setIsFullyBuffered(true);
+    const handleCanPlayThrough = () => setIsFullyBuffered(true);
 
-    // Add event listeners
-    videoElement.addEventListener('loadeddata', handleLoadedData);
-    videoElement.addEventListener('canplaythrough', handleCanPlayThrough);
+    videoElement.addEventListener("progress", checkBuffering);
+    videoElement.addEventListener("loadedmetadata", checkBuffering);
     videoElement.addEventListener("ended", handleVideoEnd);
-    videoElement.addEventListener("waiting", handleWaiting);
-    videoElement.addEventListener("playing", handlePlaying);
-    videoElement.addEventListener("progress", handleProgress);
+    videoElement.addEventListener("error", handleError);
+    videoElement.addEventListener("canplaythrough", handleCanPlayThrough);
+
+    const timeout = setTimeout(() => setIsFullyBuffered(true), 10000);
 
     return () => {
-      // Clean up event listeners
-      videoElement.removeEventListener('loadeddata', handleLoadedData);
-      videoElement.removeEventListener('canplaythrough', handleCanPlayThrough);
+      videoElement.removeEventListener("progress", checkBuffering);
+      videoElement.removeEventListener("loadedmetadata", checkBuffering);
       videoElement.removeEventListener("ended", handleVideoEnd);
-      videoElement.removeEventListener("waiting", handleWaiting);
-      videoElement.removeEventListener("playing", handlePlaying);
-      videoElement.removeEventListener("progress", handleProgress);
+      videoElement.removeEventListener("error", handleError);
+      videoElement.removeEventListener("canplaythrough", handleCanPlayThrough);
+      clearTimeout(timeout);
     };
-  }, [hasVideoPlayed, onVideoEnd]);
+  }, [onVideoEnd]);
 
-  // Play video when ready
   useEffect(() => {
-    if (hasVideoPlayed || !isVideoReady) return;
-    
-    if (videoRef.current) {
+    if (isFullyBuffered && videoRef.current) {
       const playVideo = async () => {
         try {
           await videoRef.current.play();
         } catch (error) {
-          console.error("Error playing video:", error);
-          // Try to play again with user interaction if autoplay fails
           const playOnInteraction = () => {
-            videoRef.current.play().catch(e => {
-              console.error("Still can't play:", e);
-              if (onVideoEnd) {
-                onVideoEnd();
-              }
+            videoRef.current.play().catch(() => {
+              if (onVideoEnd) onVideoEnd();
             });
-            document.removeEventListener('click', playOnInteraction);
+            document.removeEventListener("click", playOnInteraction);
           };
-          document.addEventListener('click', playOnInteraction);
+          document.addEventListener("click", playOnInteraction);
         }
       };
       playVideo();
     }
-  }, [isVideoReady, hasVideoPlayed, onVideoEnd]);
-
-  // If the video has already been played, don't render anything
-  if (hasVideoPlayed) {
-    return null;
-  }
+  }, [isFullyBuffered, onVideoEnd]);
 
   return (
-    <div className="video-container absolute w-[100vw] h-[100vh] z-[100]">
-      {!isLoaded && (
-        <LoaderPage loadingProgress={loadingProgress} />
-      )}
-      <video 
-        ref={videoRef}  
-        muted 
-        playsInline 
-        className="w-[100%] h-[100%] object-cover"
-        preload="auto"
-      >
-        <source src={Vid} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+    <div
+      ref={containerRef}
+      className="video-container absolute w-[100vw] h-[100vh] z-[100] overflow-hidden"
+    >
+      {!isFullyBuffered && <LoaderPage />}
 
-
-      <button 
-        onClick={() => {
-          if (videoRef.current) {
-            videoRef.current.pause();
-            if (onVideoEnd) {
-              onVideoEnd();
-            }
-          }
-        }}
-        className="p1 absolute bottom-8 left-1/2 -translate-x-1/2 px-6 py-3 text-lg border-2 border-[#66C2C5] rounded-lg hover:bg-[#66C2C5] hover:text-black transition-colors duration-300"
+      <button
+        onClick={() => handleVideoEnd()}
+        className="p1 absolute bottom-8 left-1/2 z-[91] -translate-x-1/2 px-6 py-3 text-lg border-2 border-[#66C2C5] rounded-lg hover:bg-[#66C2C5] hover:text-black transition-colors duration-300"
       >
         Skip Intro
       </button>
+
+      <div className="w-full h-full relative">
+        <video
+          ref={videoRef}
+          muted
+          playsInline
+          className="w-[100%] h-[100%] object-cover"
+          preload="auto"
+        >
+          <source src={Vid} type="video/mp4" />
+        </video>
+
+        <div
+          ref={barRef}
+          className="absolute bottom-0 left-0 w-full h-[8px] z-[110]"
+          style={{
+            boxShadow:
+              "0 0 0px #fff, 0 0 4px #fff, 0 0 29px #fff, 0 0 12px #228dff, 0 0 9px #228dff, 0 0 30px #228dff",
+            backgroundColor: "white",
+          }}
+        />
+
+        <div
+          ref={revealRef}
+          className="absolute top-0 left-0 w-full h-full z-[90]"
+          style={{
+            opacity: 0,
+            boxShadow:
+              "0 0 0px #fff, 0 0 4px #fff, 0 0 29px #fff, 0 0 12px #228dff, 0 0 9px #228dff, 0 0 30px #228dff",
+            backgroundColor: "white",
+          }}
+        >
+          {/* <img src={BG} alt="" className="w-full h-full object-cover" /> */}
+        </div>
+      </div>
     </div>
   );
 };

@@ -21,33 +21,27 @@ const criticalAssets = [
 
 const App = () => {
   const [BG, SetBG] = useState(Dark);
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadingProgress, setLoadingProgress] = useState(0);
   const progressRef = useRef(null);
 
   return (
     <>
-      {isLoading ? (
-        <LoaderPage loadingProgress={loadingProgress} />
-      ) : (
+      <div className="App">
         <LenisWrapper>
-          <div className="App">
-            <Navbar />
-            <img src={BG} alt="Background" className="background" />
-            <div className="cursor">
-              <ArrowPointer />
-            </div>
-            <Router>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/Projects" element={<Project BG={SetBG} />} />
-                <Route path="/About" element={<About />} />
-                <Route path="/Contact" element={<Contact />} />
-              </Routes>
-            </Router>
+          <Navbar />
+          <img src={BG} alt="Background" className="background" />
+          <div className="cursor">
+            <ArrowPointer />
           </div>
+          <Router>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/Projects" element={<Project BG={SetBG} />} />
+              <Route path="/About" element={<About />} />
+              <Route path="/Contact" element={<Contact />} />
+            </Routes>
+          </Router>
         </LenisWrapper>
-      )}
+      </div>
     </>
   );
 };

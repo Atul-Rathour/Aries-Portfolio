@@ -17,8 +17,8 @@ const Home = () => {
   useEffect(() => {
     const preloadComponents = async () => {
       // Preload all images and assets
-      const images = document.querySelectorAll('img');
-      const imagePromises = Array.from(images).map(img => {
+      const images = document.querySelectorAll("img");
+      const imagePromises = Array.from(images).map((img) => {
         if (img.complete) return Promise.resolve();
         return new Promise((resolve, reject) => {
           img.onload = resolve;
@@ -30,7 +30,7 @@ const Home = () => {
         await Promise.all(imagePromises);
         setIsPreloading(false);
       } catch (error) {
-        console.error('Error preloading assets:', error);
+        console.error("Error preloading assets:", error);
         setIsPreloading(false);
       }
     };
@@ -44,12 +44,14 @@ const Home = () => {
 
   return (
     <div className="relative">
-      {!showContent && (
-        <IntroVideo onVideoEnd={handleVideoEnd} />
-      )}
-      
+      {!showContent && <IntroVideo onVideoEnd={handleVideoEnd} />}
+
       {showContent && (
-        <div className={`transition-opacity duration-1000 ${isPreloading ? 'opacity-0' : 'opacity-100'}`}>
+        <div
+          className={`transition-opacity duration-1000 ${
+            isPreloading ? "opacity-0" : "opacity-100"
+          }`}
+        >
           <Page1 />
           <Page2 />
           <Slider />

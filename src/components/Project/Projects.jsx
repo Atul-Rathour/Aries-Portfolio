@@ -62,8 +62,8 @@ const projects = [
 const Projects = () => {
   return (
     
-    <div className="flex flex-col  mt-[12rem]  lg:ms-10 mobile:ms-4 me-10 w-[96vw] relative ">
-      <div class="relative lg:absolute lg:-top-40 text-center lg:right-10 w-full mb-4 me-10 lg:mb-0 lg:w-[30%]  uppercase font-bold text-[2rem] xl:text-[2.4rem] 2xl:text-[2.6rem] text-black opacity-20 z-10">
+    <div className="flex flex-col pt-[12rem] lg:ms-10 mobile:ms-4 me-10 w-[96vw] relative ">
+      <div class="relative lg:absolute text-center lg:right-10 w-full mb-4 me-10 lg:mb-0 lg:w-[30%]  uppercase font-bold text-[2rem] xl:text-[2.4rem] 2xl:text-[2.6rem] text-black opacity-20 z-10">
         Crafted with thought and genuine passion
       </div>
       {projects.map((project, i) => (

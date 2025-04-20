@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { LoaderPageBG } from "./LoaderPageBG";
 
-const LoaderPage = ({ loadingProgress = 0 }) => {
+const LoaderPage = () => {
   const progressRef = useRef(null);
   
   return (

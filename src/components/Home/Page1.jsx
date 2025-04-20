@@ -144,7 +144,10 @@ const Page1 = () => {
         </div>
 
         <div class="relative flex items-center justify-center lg:justify-between ">
-          <p className="p1 lg:text-[6rem] mobile:text-[4rem]">Atul</p>
+          <p className="p1 lg:text-[6rem] mobile:text-[4rem]">
+          <HackerText text={"ATUL"} />
+
+          </p>
 
           <div class="hidden md:flex w-[25%] h-[2.8rem] -mt-[2.8rem] overflow-hidden">
             <div class="w-[40%] h-full border-b border-[#66C2C5]"></div>
@@ -162,7 +165,9 @@ const Page1 = () => {
             </div>
             <div class="flex-grow w-auto h-full border-t border-[#66C2C5]"></div>
           </div>
-          <p className="p2 lg:text-[6rem] mobile:text-[4rem]">Rathour</p>
+          <p className="p2 lg:text-[6rem] mobile:text-[4rem]">
+          <HackerText text={"RATHOUR"} />
+            </p>
         </div>
       </div>
       <img src={Mark} alt="" className="mark" />

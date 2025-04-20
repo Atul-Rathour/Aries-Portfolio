@@ -74,7 +74,7 @@ const Page2 = () => {
               <div className="absolute w-[60%] lg:w-[50%] -mt-[5rem]">
                 <div className="relative flex w-full">
                   <div className="inline-flex items-center h-8 uppercase text-color-background font-black">
-                    <h3 className="mr-4 text-[#66C2C5] text-[0.9rem]">
+                    <h3 className="p1 mr-4 text-[#fff] text-[2.5rem] tracking-wider ">
                       <HackerText text={"ABOUT"} />
                     </h3>
                     <div className="w-4 h-4 rounded-full bg-white blur-[6px]"></div>
