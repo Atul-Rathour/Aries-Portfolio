@@ -18,27 +18,39 @@ const Page2 = () => {
   const intervalRef = useRef(null); // Ref for the interval
   const boxRef = useRef(null);
 
-  useGSAP(() => {
-    gsap.fromTo(
-      ".test3",
-      {
-        width: "0%",
-        opacity: 0 },
-      {
-        width: "100%",
-        opacity: 1,
-        duration: 1,
-        scrollTrigger: {
-          trigger: '.main',
-          start: "top center",
-          end: "bottom center",
-          markers: true,
-        },
+  // useGSAP(() => {
+  //   gsap.fromTo(
+  //     ".test3",
+  //     {
+  //       width: "0%",
+  //       opacity: 0,
+  //     },
+  //     {
+  //       width: "100%",
+  //       opacity: 1,
+  //       duration: 1,
+  //       scrollTrigger: {
+  //         trigger: ".main",
+  //         start: "top center",
+  //         end: "bottom center",
+  //         markers: true,
+  //       },
+  //     }
+  //   );
+  // }, []);
+
+  useEffect(() => {
+
+    gsap.to(".main", {
+      scrollTrigger:{
+        trigger: ".main",
+        pin: true,
+        start: "top top",
+        end: "+=200",
+        markers: true
       }
-    );
-  },[]);
-
-
+      })
+  }, []);
 
   useEffect(() => {
     intervalRef.current = setInterval(() => {
@@ -61,7 +73,6 @@ const Page2 = () => {
     setImage(images[currentIndex]); // Update the image when the index changes
   }, [currentIndex]);
 
-  
   return (
     <div>
       <div
